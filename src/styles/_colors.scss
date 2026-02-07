@@ -1,0 +1,25 @@
+:root {
+  --bg: #1f1f21;
+  --surface: #242528;
+  --border: #2f3136;
+  --text: #a9abaf;
+  --muted: #9ca3af;
+  --primary: #669df1;
+  --column: #18191a;
+  --count-col: #252627;
+  --card: #242528;
+  --font: ;
+}
+
+[data-theme="light"] {
+  --bg: #ffffff;
+  --surface: #ffffff;
+  --border: #dfe1e6;
+  --text: #2f4263;
+  --muted: #6b778c;
+  --primary: #1868db;
+  --column: #f8f8f8;
+  --count-col: #e9eaeb;
+  --card: #ffffff;
+  --font: ;
+}

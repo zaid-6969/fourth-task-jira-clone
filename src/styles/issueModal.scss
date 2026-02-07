@@ -1,0 +1,558 @@
+/* ===============================
+   OVERLAY
+================================ */
+.issue-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(3, 4, 7, 0.75);
+  z-index: 1000;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  padding-top: 48px;
+}
+
+/* ===============================
+   MODAL CONTAINER
+================================ */
+.issue-container {
+  width: 85%;
+  height: 80vh;
+  background: #1d2125;
+  color: #c7d1db;
+  border-radius: 8px;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.6);
+}
+
+/* ===============================
+   HEADER (FIXED)
+================================ */
+.issue-header {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  background: var(--bg);
+  padding: 16px 20px;
+  border-bottom: 1px solid #2b3137;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  h1 {
+    font-size: 18px;
+    font-weight: 600;
+    color: #ffffff;
+  }
+}
+
+.issue-close {
+  background: transparent;
+  border: none;
+  color: #9fadbc;
+  cursor: pointer;
+  padding: 6px;
+  border-radius: 4px;
+
+  &:hover {
+    background: rgba(255, 255, 255, 0.08);
+    color: #ffffff;
+  }
+}
+
+/* ===============================
+   BODY
+================================ */
+.issue-body {
+  display: flex;
+  gap: 24px;
+  padding: 20px;
+  overflow-y: auto;
+  flex: 1;
+  background-color: var(--bg);
+}
+
+/* ===============================
+   LEFT SIDEBAR (META)
+================================ */
+.issue-sidebar {
+  width: 35%;
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.issue-meta {
+  margin-bottom: 18px;
+
+  label {
+    display: block;
+    font-size: 11px;
+    font-weight: 600;
+    color: #9fadbc;
+    margin-bottom: 4px;
+    text-transform: uppercase;
+    letter-spacing: 0.4px;
+  }
+
+  select {
+    width: 30%;
+    padding: 6px 8px;
+    background: #22272b;
+    border: 1px solid #3d444d;
+    border-radius: 4px;
+    color: #dee4ea;
+    font-size: 14px;
+
+    &:focus {
+      outline: none;
+      border-color: #579dff;
+      box-shadow: 0 0 0 1px #579dff;
+    }
+  }
+}
+
+.issue-meta-value {
+  font-size: 14px;
+  color: #dee4ea;
+}
+
+/* ===============================
+   RIGHT CONTENT
+================================ */
+.issue-content {
+  flex: 1;
+}
+
+.issue-group {
+  padding: 10px 0px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-bottom: 22px;
+
+  label {
+    display: block;
+    font-size: 12px;
+    font-weight: 600;
+    color: #9fadbc;
+    margin-bottom: 6px;
+    text-transform: uppercase;
+    letter-spacing: 0.4px;
+  }
+}
+
+/* ===============================
+   QUILL (DARK)
+================================ */
+.issue-editor {
+  background: #22272b;
+  border: 1px solid #3d444d;
+  border-radius: 4px;
+}
+
+.issue-editor .ql-toolbar {
+  background: #2c333a;
+  border: none;
+  border-bottom: 1px solid #3d444d;
+}
+
+.issue-editor .ql-container {
+  background: #22272b;
+  color: #dee4ea;
+  min-height: 120px;
+  font-size: 14px;
+}
+
+.issue-editor .ql-editor {
+  color: #dee4ea;
+}
+
+.issue-editor .ql-editor.ql-blank::before {
+  color: #9fadbc;
+}
+
+/* ===============================
+   FOOTER (FIXED)
+================================ */
+.issue-footer {
+  position: sticky;
+  bottom: 0;
+  z-index: 10;
+  background: var(--bg);
+  padding: 16px 20px;
+  border-top: 1px solid #2b3137;
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+}
+
+.issue-cancel {
+  background: transparent;
+  border: none;
+  color: #9fadbc;
+  padding: 8px 14px;
+  cursor: pointer;
+  border-radius: 4px;
+
+  &:hover {
+    background: rgba(255, 255, 255, 0.08);
+    color: #ffffff;
+  }
+}
+
+.issue-save {
+  background: #579dff;
+  color: #0c0f14;
+  border: none;
+  border-radius: 4px;
+  padding: 8px 18px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+
+  &:hover {
+    background: #85b8ff;
+  }
+}
+
+/* ===============================
+   DETAILS DROPDOWN
+================================ */
+.issue-details {
+  display: flex;
+  flex-direction: column;
+  max-height: 45vh;
+  border: 1px solid #3d444d;
+  border-radius: 5px;
+  overflow-y: scroll;
+  overflow-x: hidden;
+  padding: 10px;
+}
+
+.issue-details-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  cursor: pointer;
+
+  font-size: 13px;
+  font-weight: 600;
+  color: #9fadbc;
+  text-transform: uppercase;
+  letter-spacing: 0.3px;
+
+  &:hover {
+    color: #ffffff;
+  }
+
+  .arrow {
+    transition: transform 0.2s ease;
+    font-size: 14px;
+  }
+
+  .arrow.open {
+    transform: rotate(90deg);
+  }
+}
+
+.issue-details-body {
+  margin-top: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 25px;
+  width: 85%;
+  padding: 20px;
+}
+
+.issue-meta-value {
+  font-size: 14px;
+  color: #dee4ea;
+}
+
+.issue-details-header {
+  margin: 1px;
+  font-size: 18px;
+}
+
+.issue-details {
+  border: 1px solid #3d444d;
+  border-radius: 5px;
+}
+
+.issue-meta {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+/* READ MODE */
+.issue-view {
+  padding: 6px 2px;
+  font-size: 14px;
+  color: #dee4ea;
+  cursor: pointer;
+
+  &:hover {
+    background: rgba(255, 255, 255, 0.04);
+  }
+}
+
+.issue-view .muted {
+  color: #9fadbc;
+  font-style: italic;
+}
+
+.inline-actions {
+  display: flex;
+  gap: 8px;
+   margin: 10px 0px;
+}
+
+.inline-save {
+  background: #579dff;
+  color: #0c0f14;
+  border: none;
+  border-radius: 4px;
+  padding: 6px 12px;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+
+  &:hover {
+    background: #85b8ff;
+  }
+}
+
+.inline-cancel {
+  background: transparent;
+  border: none;
+  color: #9fadbc;
+  cursor: pointer;
+  font-size: 13px;
+
+  &:hover {
+    color: #ffffff;
+  }
+}
+
+.issue-content{
+  overflow-y: scroll;
+  overflow-x: hidden;
+}
+
+/* =========================
+   JIRA COMMENTS WRAPPER
+========================= */
+
+.jira-comments {
+  margin-top: 24px;
+
+  h4 {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--text);
+    margin-bottom: 12px;
+  }
+}
+
+/* =========================
+   COMMENT LIST
+========================= */
+
+.comment-list {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  margin-bottom: 20px;
+}
+
+/* =========================
+   SINGLE COMMENT
+========================= */
+
+.comment-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+}
+
+/* Avatar (Jira-style circle) */
+.comment-avatar {
+  width: 32px;
+  height: 32px;
+  min-width: 32px;
+  border-radius: 50%;
+  background: var(--primary);
+  color: #fff;
+  font-size: 13px;
+  font-weight: 600;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Comment bubble */
+.comment-body {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 10px 12px;
+  width: 100%;
+}
+
+/* Username */
+.comment-user {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text);
+  margin-bottom: 6px;
+}
+
+/* =========================
+   COMMENT CONTENT (QUILL)
+========================= */
+
+/* Force override global resets */
+.comment-text {
+  font-size: 14px;
+  line-height: 1.6;
+  color: var(--text);
+}
+
+/* Paragraphs */
+.comment-text p {
+  margin: 0 0 8px 0 !important;
+  font-weight: 400 !important;
+}
+
+.comment-text p:last-child {
+  margin-bottom: 0 !important;
+}
+
+/* Bold / Italic / Underline */
+.comment-text strong {
+  font-weight: 600 !important;
+}
+
+.comment-text em {
+  font-style: italic !important;
+}
+
+.comment-text u {
+  text-decoration: underline;
+}
+
+/* Lists */
+.comment-text ul,
+.comment-text ol {
+  padding-left: 20px !important;
+  margin: 6px 0 8px;
+}
+
+.comment-text li {
+  margin-bottom: 4px;
+  font-weight: 400 !important;
+}
+
+/* Links */
+.comment-text a {
+  color: var(--primary) !important;
+  text-decoration: none;
+  font-weight: 500;
+}
+
+.comment-text a:hover {
+  text-decoration: underline;
+}
+
+/* Blockquote (Jira style) */
+.comment-text blockquote {
+  border-left: 3px solid var(--border);
+  padding-left: 12px;
+  margin: 8px 0;
+  color: var(--muted);
+  background: rgba(0, 0, 0, 0.03);
+  border-radius: 4px;
+}
+
+/* Inline code */
+.comment-text code {
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  padding: 2px 6px;
+  font-size: 13px;
+  font-family: monospace;
+}
+
+/* Images (future-proof) */
+.comment-text img {
+  max-width: 100%;
+  border-radius: 6px;
+  margin-top: 8px;
+}
+
+/* =========================
+   COMMENT EDITOR (ADD)
+========================= */
+
+.comment-editor {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 8px;
+}
+
+/* Quill toolbar */
+.comment-editor .ql-toolbar {
+  border: none;
+  border-bottom: 1px solid var(--border);
+  background: var(--bg);
+}
+
+/* Quill container */
+.comment-editor .ql-container {
+  border: none;
+  background: var(--surface);
+  color: var(--text);
+}
+
+.comment-editor .ql-editor {
+  min-height: 80px;
+  color: var(--text);
+}
+
+.comment-editor .ql-editor.ql-blank::before {
+  color: var(--muted);
+}
+
+/* =========================
+   ACTION BUTTON
+========================= */
+
+.comment-actions {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 8px;
+}
+
+.comment-actions button {
+  background: var(--primary);
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  padding: 6px 14px;
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  margin: 0px 10px;
+}
+
+.comment-actions button:hover {
+  opacity: 0.9;
+}

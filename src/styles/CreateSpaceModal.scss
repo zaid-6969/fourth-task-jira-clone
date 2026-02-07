@@ -1,0 +1,54 @@
+.user-list {
+  margin-top: 8px;
+  max-height: 140px;
+  overflow-y: auto;
+}
+
+.user-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px;
+  border-radius: 4px;
+  cursor: pointer;
+
+  &:hover {
+    background: #2c333a;
+  }
+
+  &.selected {
+    background: #0052cc;
+  }
+}
+
+.avatar {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: #0052cc;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.modal-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  margin-top: 20px;
+
+  .cancel {
+    background: transparent;
+    border: none;
+    color: #ccc;
+  }
+
+  .create {
+    background: #0052cc;
+    border: none;
+    padding: 6px 14px;
+    border-radius: 4px;
+    color: #fff;
+  }
+}
+

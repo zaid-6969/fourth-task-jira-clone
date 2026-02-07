@@ -1,0 +1,162 @@
+.admin-page {
+  padding: 20px;
+  width: 80%;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.admin-title {
+  font-size: 22px;
+  font-weight: 600;
+  color: var(--card-text);
+  margin: 0;
+}
+
+.admin-subtitle {
+  font-size: 18px;
+  font-weight: 500;
+  color: var(--card-text);
+  margin-top: 24px;
+}
+
+.admin-form {
+  display: flex;
+  align-items: flex-end;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.admin-input {
+  background-color: var(--card-bg);
+  border: 1px solid var(--card-border);
+  color: var(--card-text);
+
+  padding: 10px 12px;
+  border-radius: 6px;
+  font-size: 14px;
+  min-width: 220px;
+
+  outline: none;
+  transition: border 0.15s ease, box-shadow 0.15s ease;
+
+  &::placeholder {
+    color: var(--card-subtext);
+  }
+
+  &:focus {
+    border-color: #669df1;
+    box-shadow: 0 0 0 1px rgba(102, 157, 241, 0.35);
+  }
+}
+
+.user-dropdown {
+  position: relative;
+  width: 260px;
+  font-size: 14px;
+}
+
+.user-dropdown-trigger {
+  background-color: var(--card-bg);
+  border: 1px solid var(--card-border);
+  border-radius: 6px;
+  padding: 10px 12px;
+  color: var(--card-text);
+  cursor: pointer;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  transition: background 0.15s ease, border-color 0.15s ease;
+
+  &:hover {
+    background-color: var(--card-hover);
+  }
+}
+
+
+.user-name {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.check {
+  color: #669df1;
+}
+
+.admin-btn {
+  border: none;
+  border-radius: 6px;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  padding: 10px 14px;
+  transition: background 0.15s ease, color 0.15s ease;
+
+  &.primary {
+    background-color: #669df1;
+    color: #000;
+
+    &:hover {
+      background-color: #4f8df0;
+    }
+  }
+
+  &.secondary {
+    background: transparent;
+    color: var(--card-subtext);
+
+    &:hover {
+      background-color: var(--card-hover);
+      color: var(--card-text);
+    }
+  }
+
+  &:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+  }
+}
+
+.admin-project-list {
+  display: flex;
+  gap: 16px;
+  width: 100%;
+  overflow-x: auto;
+  padding-bottom: 8px;
+}
+
+.project-title {
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--card-text);
+  margin: 0;
+
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.project-meta {
+  font-size: 12px;
+  color: var(--card-subtext);
+  margin-top: 6px;
+}
+
+.admin-edit-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+/* =========================
+   TABINATION WRAPPER
+========================= */
+
+.home-tabination {
+  margin-top: 20px;
+  height: 45vh;
+  overflow-y: auto;
+}

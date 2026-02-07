@@ -1,0 +1,73 @@
+@import "_colors.scss";
+
+.drop-down-option {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+.aside-list-items-first {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.user-dropdown-trigger {
+  width: 150px;
+  background-color: #1d1f23;
+  display: flex;
+  padding: 5px;
+  border-radius: 3px;
+  cursor: pointer;
+}
+
+.create-btn {
+  margin-top: 15px;
+  padding: 10px;
+  background-color: var(--primary);
+  border: none;
+  color: var(--text);
+  border-radius: 3px;
+}
+
+.create-btn:hover {
+  background-color: #77b4f5;
+  color: rgb(255, 255, 255);
+}
+
+.creation-module-fixied {
+  position: fixed;
+  width: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: row;
+  z-index: 10;
+}
+
+.user-avatar {
+  height: 15px;
+  padding: 6px;
+  border-radius: 20px;
+  background: #579dff;
+  color: #0c1a3a;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 600;
+  font-size: 15px;
+  cursor: pointer;
+  user-select: none;
+  transition:
+    background 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.user-avatar:hover {
+  background: #3d7eff;
+  box-shadow: 0 0 0 2px rgba(87, 157, 255, 0.4);
+}
+
+.date {
+  width: 130px;
+}

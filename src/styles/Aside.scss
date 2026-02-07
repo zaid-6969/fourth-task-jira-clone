@@ -1,0 +1,374 @@
+@import "_colors";
+
+@mixin reset {
+  margin: 0;
+  padding: 0;
+}
+
+/* ================= CONTAINER ================= */
+
+.aside-container {
+  width: 287px;
+  height: 100vh;
+  background: var(--bg);
+  border-right: 1px solid var(--border);
+  transition: width 0.25s ease;
+  overflow: hidden;
+}
+
+.aside-container.open {
+  width: 287px;
+}
+
+.aside-container.collapsed {
+  width: 0;
+  border-right: none;
+}
+
+.aside-container.collapsed:hover {
+  width: 287px;
+  position: fixed;
+  left: 0;
+  top: 45px;
+  z-index: 999;
+  background: var(--bg);
+  box-shadow: 4px 0 20px rgba(0, 0, 0, 0.5);
+}
+
+.aside-container.collapsed::before {
+  content: "";
+  position: fixed;
+  left: 0;
+  top: 45px;
+  width: 12px;
+  height: 100vh;
+}
+
+/* ================= MENU ================= */
+
+.aside-menu {
+  @include reset();
+  width: 260px;
+  list-style: none;
+  padding: 12px;
+  font-size: 18px;
+}
+
+.aside-item {
+  display: flex;
+  flex-direction: column;
+  width: 83%;
+}
+
+/* ================= LINK ================= */
+
+.aside-link {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 5px 10px;
+  font-size: 18px;
+  color: var(--muted);
+  border-radius: 6px;
+  cursor: pointer;
+  text-decoration: none;
+  position: relative;
+
+  &:hover {
+    background: rgba(255, 255, 255, 0.05);
+    color: var(--text);
+  }
+
+  &.active {
+    background: rgba(102, 157, 241, 0.15);
+    color: var(--primary);
+  }
+
+  &.active::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    height: 16px;
+    width: 3px;
+    background: var(--primary);
+    border-radius: 999px;
+  }
+}
+
+/* ================= ICON SYSTEM (IMPORTANT) ================= */
+
+.icon-wrapper {
+  position: relative;
+  width: 20px;
+  height: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.icon-normal,
+.icon-hover {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: opacity 0.15s ease;
+}
+
+/* default */
+.icon-normal {
+  opacity: 1;
+}
+
+.icon-hover {
+  opacity: 0;
+}
+
+/* hover swap (normal items) */
+.aside-link:hover .icon-normal {
+  opacity: 0;
+}
+
+.aside-link:hover .icon-hover {
+  opacity: 1;
+}
+
+/* disable swap for starred & recent */
+.aside-link.no-hover-swap:hover .icon-normal {
+  opacity: 1 !important;
+}
+
+.aside-link.no-hover-swap:hover .icon-hover {
+  opacity: 0 !important;
+}
+
+/* ================= END ICONS ================= */
+
+.end-icon {
+  opacity: 0;
+  transition: opacity 0.15s ease;
+}
+
+.aside-link:hover .end-icon {
+  opacity: 1;
+}
+
+/* arrow for starred & recent */
+.end-icon.arrow-only {
+  opacity: 1 !important;
+  display: flex;
+  align-items: center;
+  font-size: 16px;
+  color: #8c9bab;
+}
+
+/* ================= SPACES ================= */
+
+.space-toggle {
+  justify-content: space-between;
+}
+
+/* ================= SUBMENU ================= */
+
+.aside-submenu {
+  margin-left: 28px;
+  padding-left: 12px;
+  border-left: 1px solid var(--border);
+  animation: dropdown 0.2s ease;
+}
+
+.aside-sub-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 10px;
+  font-size: 13px;
+  color: var(--muted);
+  border-radius: 5px;
+  cursor: pointer;
+
+  &:hover {
+    background: rgba(255, 255, 255, 0.05);
+    color: var(--text);
+  }
+}
+
+.aside-project-active {
+  background: rgba(102, 157, 241, 0.15);
+  color: var(--primary);
+}
+
+/* ================= PROJECT DOT ================= */
+
+.project-dot {
+  width: 3px;
+  height: 14px;
+  border-radius: 2px;
+  background: #555;
+}
+
+.aside-project-active .project-dot {
+  background: var(--primary);
+}
+
+/* ================= STARRED POPUP ================= */
+
+.starred-popup {
+  position: fixed;
+  left: 260px;
+  top: 80px;
+  width: 320px;
+  background: var(--surface);
+  border-radius: 8px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6);
+  z-index: 999;
+  color: var(--text);
+  display: flex;
+  flex-direction: column;
+}
+
+.starred-header {
+  padding: 12px 16px;
+  font-weight: 600;
+  border-bottom: 1px solid var(--border);
+}
+
+.starred-search {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 12px;
+  border-bottom: 1px solid var(--border);
+
+  input {
+    background: transparent;
+    border: none;
+    outline: none;
+    color: var(--text);
+    width: 100%;
+    font-size: 14px;
+  }
+
+  svg {
+    color: var(--muted);
+  }
+}
+
+.starred-list {
+  max-height: 260px;
+  overflow-y: auto;
+}
+
+.starred-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 14px;
+  cursor: pointer;
+
+  &:hover {
+    background: rgba(255, 255, 255, 0.05);
+  }
+}
+
+.starred-icon {
+  color: #facc15;
+  font-size: 16px;
+}
+
+.starred-name {
+  font-size: 14px;
+}
+
+.starred-empty {
+  padding: 16px;
+  color: var(--muted);
+  font-size: 13px;
+}
+
+.starred-footer {
+  padding: 10px 14px;
+  border-top: 1px solid var(--border);
+  font-size: 13px;
+  color: var(--muted);
+  cursor: pointer;
+
+  &:hover {
+    background: rgba(255, 255, 255, 0.05);
+    color: var(--text);
+  }
+}
+
+/* ================= ANIMATION ================= */
+
+@keyframes dropdown {
+  from {
+    opacity: 0;
+    transform: translateY(-4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Spaces: always show + and dots */
+.end-icon.always-visible {
+  opacity: 1 !important;
+}
+
+.end-icon {
+  opacity: 0;
+  transition: opacity 0.15s ease;
+}
+
+.aside-link:hover .end-icon {
+  opacity: 1;
+}
+
+
+.aside-submenu {
+  margin-left: 28px;
+  padding-left: 12px;
+  border-left: 1px solid var(--border);
+
+  /* 🔴 HIDE BY DEFAULT */
+  display: none;
+}
+
+/* ✅ SHOW ONLY WHEN OPEN */
+.aside-submenu.open {
+  display: block;
+  animation: dropdown 0.2s ease;
+}
+
+/* ================= SPACES: ALWAYS SHOW ACTIONS ================= */
+
+.space-toggle .space-actions {
+  opacity: 1 !important;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.starred-popup {
+  z-index: 2000;
+}
+
+
+/* FIX: For You icon must NEVER disappear */
+.aside-link.no-hover-swap .icon-normal {
+  opacity: 1 !important;
+}
+
+/* ===== FOR YOU FIX ===== */
+.aside-link.for-you p {
+  opacity: 1 !important;
+  display: block !important;
+  visibility: visible !important;
+  white-space: nowrap;
+}

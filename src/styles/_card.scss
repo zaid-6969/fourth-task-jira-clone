@@ -1,0 +1,21 @@
+:root {
+  --card-bg: #242528;
+  --card-text: #e6e6e6;
+  --card-subtext: #a1a1aa;
+  --card-border: #2f3033;
+  --card-hover: #2c2d31;
+
+  --card-accent: #693200;
+  --card-count-bg: #2f3033;
+}
+
+[data-theme="light"] {
+  --card-bg: #ffffff;
+  --card-text: #172b4d;
+  --card-subtext: #6b778c;
+  --card-border: #dfe1e6;
+  --card-hover: #f4f5f7;
+
+  --card-accent: #ffab006e;
+  --card-count-bg: #ebecf0;
+}
