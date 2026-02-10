@@ -5,6 +5,7 @@ import { SlCalender } from "react-icons/sl";
 import { FaPencilAlt } from "react-icons/fa";
 import { MdDelete } from "react-icons/md";
 import { FaCheck } from "react-icons/fa6";
+
 const KanbanCard = ({
   item,
   sourceCol,
@@ -13,15 +14,15 @@ const KanbanCard = ({
   updateIssue,
   projectName,
   columns,
-  moveCard, // ✅ ADD THIS
+  moveCard,
 }) => {
   const [editing, setEditing] = useState(false);
   const [text, setText] = useState(item.content);
   const [showModal, setShowModal] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
-  const menuRef = useRef(null);
-
   const [showMoveMenu, setShowMoveMenu] = useState(false);
+
+  const menuRef = useRef(null);
 
   /* CLOSE MENU ON OUTSIDE CLICK */
   useEffect(() => {
@@ -38,16 +39,27 @@ const KanbanCard = ({
   const handleDragStart = (e) => {
     e.stopPropagation();
     e.dataTransfer.effectAllowed = "move";
-
     e.dataTransfer.setData(
       "application/card",
       JSON.stringify({
         card: item,
         sourceCol,
         fromIndex: index,
-      }),
+      })
     );
   };
+
+  /* ===== JIRA DATE LOGIC ===== */
+  const showDate = item.dueDate || item.createdAt;
+
+  const isDoneColumn =
+    item.columnTitle?.toLowerCase() === "done";
+
+  const isOverdue =
+    item.dueDate &&
+    new Date(item.dueDate) < new Date() &&
+    !isDoneColumn;
+  /* ========================== */
 
   return (
     <>
@@ -72,19 +84,22 @@ const KanbanCard = ({
         ) : (
           <>
             <p className="card-content">{item.content}</p>
-            <span className="card-date">
-              <SlCalender />{" "}
-              {item.createdAt &&
-                new Date(item.createdAt).toLocaleDateString("en-US", {
+
+            {/* DATE (DUE DATE FIRST, JIRA STYLE) */}
+            <span className={`card-date ${isOverdue ? "overdue" : ""}`}>
+              <SlCalender />
+              {showDate &&
+                new Date(showDate).toLocaleDateString("en-US", {
                   month: "short",
                   day: "numeric",
                   year: "numeric",
                 })}
+              {item.dueDate && " (Due)"}
             </span>
           </>
         )}
 
-        {/* CARD MENU */}
+        {/* CARD MENU BUTTON */}
         <span
           className="card-menu-btn"
           onClick={(e) => {
@@ -133,9 +148,7 @@ const KanbanCard = ({
                           disabled={isCurrent}
                           onClick={(e) => {
                             e.stopPropagation();
-
                             moveCard(item.columnId, col.id, item, index, 0);
-
                             setMenuOpen(false);
                             setShowMoveMenu(false);
                           }}
@@ -164,13 +177,11 @@ const KanbanCard = ({
         {/* META */}
         <div className="card-meta">
           <div className="card-issue-key">
-            <span>
-              <label className="icon-checkbox always-checked">
-                <span className="checkbox-box">
-                  <FaCheck className="checkbox-icon" />
-                </span>
-              </label>
-            </span>
+            <label className="icon-checkbox always-checked">
+              <span className="checkbox-box">
+                <FaCheck className="checkbox-icon" />
+              </span>
+            </label>
             <span style={{ fontSize: "15px" }}>DEV-{index + 1}</span>
           </div>
 
@@ -180,12 +191,10 @@ const KanbanCard = ({
             </div>
 
             <span className="user-tooltip">
-              {" "}
-              <span>👤</span>{" "}
+              <span>👤</span>
               <span className="tooltip-username">
-                {" "}
-                {item.createdByName}{" "}
-              </span>{" "}
+                {item.createdByName}
+              </span>
             </span>
           </span>
         </div>

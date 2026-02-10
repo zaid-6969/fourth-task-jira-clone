@@ -12,25 +12,18 @@ import style from "../styles/btn.module.scss";
 import TextEditor from "./TextEditor";
 
 import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
-import { MdKeyboardDoubleArrowUp } from "react-icons/md";
-import { storage } from "../firebase/firebase";
+import { MdKeyboardDoubleArrowUp, MdKeyboardDoubleArrowDown } from "react-icons/md";
 import { FaEquals } from "react-icons/fa";
-import { MdKeyboardDoubleArrowDown } from "react-icons/md";
+import { storage } from "../firebase/firebase";
 
+/* IMAGE UPLOAD */
 export const uploadImageToFirebase = async (file) => {
   if (!file) return null;
 
   try {
-    // create unique path
     const imageRef = ref(storage, `issues/${Date.now()}-${file.name}`);
-
-    // upload file
     await uploadBytes(imageRef, file);
-
-    // get downloadable URL
-    const imageUrl = await getDownloadURL(imageRef);
-
-    return imageUrl;
+    return await getDownloadURL(imageRef);
   } catch (error) {
     console.error("Image upload failed:", error);
     return null;
@@ -53,11 +46,12 @@ const Creationmodule = () => {
   const [title, setTitle] = useState("");
   const [summary, setSummary] = useState("");
   const [description, setDescription] = useState("");
+
+  const [startDate, setStartDate] = useState(""); // ✅ ADDED
   const [dueDate, setDueDate] = useState("");
+
   const [priority, setPriority] = useState("medium");
-
   const [imageFile, setImageFile] = useState(null);
-
   const [loading, setLoading] = useState(false);
 
   /* LOAD PROJECTS */
@@ -69,13 +63,13 @@ const Creationmodule = () => {
     loadProjects();
   }, []);
 
-  /* LOAD KANBAN COLUMNS */
+  /* LOAD COLUMNS */
   useEffect(() => {
     if (!selectedProject) return;
 
     const loadColumns = async () => {
-      const ref = doc(db, "projects", selectedProject.id, "kanban", "board");
-      const snap = await getDoc(ref);
+      const refDoc = doc(db, "projects", selectedProject.id, "kanban", "board");
+      const snap = await getDoc(refDoc);
       if (!snap.exists()) return;
 
       const board = snap.data();
@@ -88,11 +82,9 @@ const Creationmodule = () => {
 
   /* CREATE TICKET */
   const handleCreateTicket = async () => {
-    if (!title || !selectedProject || !selectedColumn) return;
-    if (loading) return;
+    if (!title || !selectedProject || !selectedColumn || loading) return;
 
     setLoading(true);
-    console.log("🚀 Submit started");
 
     try {
       const boardRef = doc(
@@ -100,24 +92,17 @@ const Creationmodule = () => {
         "projects",
         selectedProject.id,
         "kanban",
-        "board",
+        "board"
       );
 
       const snap = await getDoc(boardRef);
-      if (!snap.exists()) {
-        console.error("❌ Board not found");
-        setLoading(false);
-        return;
-      }
+      if (!snap.exists()) return;
 
       const board = snap.data();
 
-      // 🖼️ IMAGE UPLOAD
       let imageUrl = null;
       if (imageFile) {
-        console.log("⬆️ Uploading image...");
         imageUrl = await uploadImageToFirebase(imageFile);
-        console.log("✅ Image uploaded:", imageUrl);
       }
 
       const updatedColumns = board.columns.map((col) =>
@@ -131,8 +116,9 @@ const Creationmodule = () => {
                   content: title,
                   summary,
                   description,
+                  startDate, // ✅
+                  dueDate,   // ✅
                   priority,
-                  dueDate,
                   imageUrl,
                   columnId: col.id,
                   columnTitle: col.title,
@@ -142,17 +128,16 @@ const Creationmodule = () => {
                 },
               ],
             }
-          : col,
+          : col
       );
 
-      console.log("💾 Saving to Firestore...");
       await setDoc(boardRef, { columns: updatedColumns }, { merge: true });
-      console.log("✅ Ticket created");
 
-      // RESET
+      /* RESET */
       setTitle("");
       setSummary("");
       setDescription("");
+      setStartDate("");
       setDueDate("");
       setPriority("medium");
       setImageFile(null);
@@ -160,7 +145,7 @@ const Creationmodule = () => {
 
       dispatch(toggleModule());
     } catch (err) {
-      console.error("🔥 CREATE TICKET FAILED:", err);
+      console.error("CREATE TICKET FAILED:", err);
     } finally {
       setLoading(false);
     }
@@ -169,7 +154,7 @@ const Creationmodule = () => {
   return (
     <div className="creation-overlay">
       <div className="creation-container">
-        {/* HEADER (FIXED) */}
+        {/* HEADER */}
         <div className="creation-header">
           <h1>Create Ticket</h1>
           <button
@@ -180,7 +165,7 @@ const Creationmodule = () => {
           </button>
         </div>
 
-        {/* BODY (SCROLLABLE) */}
+        {/* BODY */}
         <div className="creation-body">
           {/* PROJECT */}
           <div className="form-group">
@@ -259,15 +244,26 @@ const Creationmodule = () => {
             <TextEditor value={description} onChange={setDescription} />
           </div>
 
-          <div style={{ width: "20%" }} className="form-group">
-            <label>Due date</label>
-            <input
-              type="date"
-              value={dueDate}
-              onChange={(e) => setDueDate(e.target.value)}
-            />
+          {/* DATES */}
+          <div className="form-group">
+            <label>Timeline</label>
+            <div className="date-row">
+              <input
+                type="date"
+                value={startDate}
+                onChange={(e) => setStartDate(e.target.value)}
+              />
+              <input
+                type="date"
+                value={dueDate}
+                min={startDate}
+                disabled={!startDate}
+                onChange={(e) => setDueDate(e.target.value)}
+              />
+            </div>
           </div>
 
+          {/* PRIORITY */}
           <div className="priority-wrapper">
             <span className={`priority-icon ${priority}`}>
               {priority === "low" && <MdKeyboardDoubleArrowDown />}
@@ -284,16 +280,9 @@ const Creationmodule = () => {
               <option value="high">Highest</option>
             </select>
           </div>
-
-           {/* <input
-            type="file"
-            accept="image/*"
-            onChange={(e) => setImageFile(e.target.files[0])}
-             /> */}
-
         </div>
 
-        {/* FOOTER (FIXED) */}
+        {/* FOOTER */}
         <div className="creation-footer">
           <button
             className={style["create-btn"]}

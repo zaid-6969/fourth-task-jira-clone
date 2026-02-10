@@ -20,14 +20,18 @@ const IssueModal = ({ item, projectName, columns, onClose, onUpdate }) => {
 
   const [summaryHTML, setSummaryHTML] = useState(item.summary || "");
   const [descriptionHTML, setDescriptionHTML] = useState(
-    item.description || "",
+    item.description || ""
   );
 
   const [showDetails, setShowDetails] = useState(true);
 
-  /* INIT QUILL WHEN EDIT MODE */
+  /* 🔑 FORCE REMOUNT KEYS (FIX) */
+  const [summaryKey, setSummaryKey] = useState(0);
+  const [descriptionKey, setDescriptionKey] = useState(0);
+
+  /* INIT QUILL (NO CLEANUP HERE) */
   useEffect(() => {
-    if (editSummary && !summaryQuill.current) {
+    if (editSummary && summaryRef.current && !summaryQuill.current) {
       summaryQuill.current = new Quill(summaryRef.current, {
         theme: "snow",
         placeholder: "Add a summary…",
@@ -35,16 +39,16 @@ const IssueModal = ({ item, projectName, columns, onClose, onUpdate }) => {
       summaryQuill.current.root.innerHTML = summaryHTML;
     }
 
-    if (editDescription && !descriptionQuill.current) {
+    if (editDescription && descriptionRef.current && !descriptionQuill.current) {
       descriptionQuill.current = new Quill(descriptionRef.current, {
         theme: "snow",
         placeholder: "Add a description…",
       });
       descriptionQuill.current.root.innerHTML = descriptionHTML;
     }
-  }, [editSummary, editDescription, summaryHTML, descriptionHTML]);
+  }, [editSummary, editDescription]);
 
-  /* SAVE SUMMARY ONLY */
+  /* SAVE SUMMARY */
   const saveSummary = () => {
     const html = summaryQuill.current.root.innerHTML;
     setSummaryHTML(html);
@@ -57,9 +61,10 @@ const IssueModal = ({ item, projectName, columns, onClose, onUpdate }) => {
 
     setEditSummary(false);
     summaryQuill.current = null;
+    setSummaryKey((k) => k + 1); // 🔥 force destroy DOM
   };
 
-  /* SAVE DESCRIPTION ONLY */
+  /* SAVE DESCRIPTION */
   const saveDescription = () => {
     const html = descriptionQuill.current.root.innerHTML;
     setDescriptionHTML(html);
@@ -72,6 +77,7 @@ const IssueModal = ({ item, projectName, columns, onClose, onUpdate }) => {
 
     setEditDescription(false);
     descriptionQuill.current = null;
+    setDescriptionKey((k) => k + 1); // 🔥 force destroy DOM
   };
 
   /* MAIN SAVE */
@@ -120,14 +126,22 @@ const IssueModal = ({ item, projectName, columns, onClose, onUpdate }) => {
                 />
               ) : (
                 <>
-                  <div ref={summaryRef} className="issue-editor" />
+                  <div
+                    key={summaryKey}
+                    ref={summaryRef}
+                    className="issue-editor"
+                  />
                   <div className="inline-actions">
                     <button className="inline-save" onClick={saveSummary}>
                       Save
                     </button>
                     <button
                       className="inline-cancel"
-                      onClick={() => setEditSummary(false)}
+                      onClick={() => {
+                        setEditSummary(false);
+                        summaryQuill.current = null;
+                        setSummaryKey((k) => k + 1);
+                      }}
                     >
                       Cancel
                     </button>
@@ -153,14 +167,22 @@ const IssueModal = ({ item, projectName, columns, onClose, onUpdate }) => {
                 />
               ) : (
                 <>
-                  <div ref={descriptionRef} className="issue-editor" />
+                  <div
+                    key={descriptionKey}
+                    ref={descriptionRef}
+                    className="issue-editor"
+                  />
                   <div className="inline-actions">
                     <button className="inline-save" onClick={saveDescription}>
                       Save
                     </button>
                     <button
                       className="inline-cancel"
-                      onClick={() => setEditDescription(false)}
+                      onClick={() => {
+                        setEditDescription(false);
+                        descriptionQuill.current = null;
+                        setDescriptionKey((k) => k + 1);
+                      }}
                     >
                       Cancel
                     </button>
@@ -169,8 +191,7 @@ const IssueModal = ({ item, projectName, columns, onClose, onUpdate }) => {
               )}
             </div>
 
-            {/* ✅ COMMENT SECTION (FIXED) */}
-
+            {/* ACTIVITY */}
             <ActivityTabs
               activeTab={activeActivityTab}
               onTabChange={setActiveActivityTab}
@@ -188,7 +209,6 @@ const IssueModal = ({ item, projectName, columns, onClose, onUpdate }) => {
                 {activeActivityTab === "History" && (
                   <IssueActivity issueId={item.id} />
                 )}
-
                 {activeActivityTab === "Work log" && (
                   <div className="activity-placeholder">
                     Work log coming soon

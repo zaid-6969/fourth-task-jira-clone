@@ -3,7 +3,6 @@
 .kanban-board {
   display: flex;
   gap: 10px;
-  width: 80vw;
   min-height: 75vh;
   overflow-x: auto;
   overflow-y: hidden;
@@ -414,4 +413,17 @@
   font-size: 13px;
   color: #8c9bab;
   pointer-events: none;
+}
+
+
+.card-date {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  color: #6b778c; // Jira normal gray
+}
+
+.card-date.overdue {
+  color: #de350b; // Jira red 🔴
+  font-weight: 600;
 }
