@@ -3,6 +3,8 @@ import { signInWithEmailAndPassword, signInWithPopup } from "firebase/auth";
 import { auth, db, googleProvider } from "../firebase/firebase";
 import { useNavigate, Link } from "react-router-dom";
 import { doc, getDoc, setDoc } from "firebase/firestore";
+import styles from "../styles/LoginPage.module.scss";
+import { FcGoogle } from "react-icons/fc";
 
 const ADMIN_EMAIL = "admin@gmail.com";
 
@@ -20,7 +22,6 @@ const Login = () => {
 
     try {
       const result = await signInWithEmailAndPassword(auth, email, password);
-
       await handleUserData(result.user);
     } catch (err) {
       setError(err.message);
@@ -59,46 +60,56 @@ const Login = () => {
   };
 
   return (
-    <div className="auth-container">
-      <div className="auth-card">
-        <h2>Login</h2>
+    <div className={styles.loginPage}>
+      <div className={styles.loginContainer}>
+        {/* LEFT SIDE */}
+        <div className={styles.loginLeft}>
+          <h1>Welcome back 👋</h1>
+          <p className={styles.subtitle}>
+            Login to continue managing your work
+          </p>
 
-        <form onSubmit={handleLogin}>
-          <input
-            type="email"
-            placeholder="Email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            required
-          />
+          <form onSubmit={handleLogin} className={styles.loginForm}>
+            <input
+              type="email"
+              placeholder="Email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              required
+            />
 
-          <input
-            type="password"
-            placeholder="Password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            required
-          />
+            <input
+              type="password"
+              placeholder="Password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              required
+            />
 
-          {error && <p className="error">{error}</p>}
+            {error && <p className={styles.error}>{error}</p>}
 
-          <button type="submit">Login</button>
-        </form>
+            <button type="submit">Login</button>
+          </form>
 
-        <button onClick={handleGoogleLogin} className="google-btn">
-          Sign up with Google
-        </button>
-
-        {/* 🔹 REGISTER BUTTON */}
-        <p className="auth-footer">
-          Do you have a google account?{" "}
-          <Link
-            to="/register"
-            className="register-link"
+          <button
+            onClick={handleGoogleLogin}
+            className={styles.googleBtn}
           >
-            Register
-          </Link>
-        </p>
+            <FcGoogle className={styles.googleIcon} />
+            Continue with Google
+          </button>
+
+
+          <p className={styles.authFooter}>
+            Do you have a google account?{" "}
+            <Link to="/register" className={styles.registerLink}>
+              Register
+            </Link>
+          </p>
+        </div>
+
+        {/* RIGHT SIDE */}
+        <div className={styles.loginRight} />
       </div>
     </div>
   );

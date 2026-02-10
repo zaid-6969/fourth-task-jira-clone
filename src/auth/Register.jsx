@@ -6,6 +6,8 @@ import {
 import { auth, db, googleProvider } from "../firebase/firebase";
 import { useNavigate } from "react-router-dom";
 import { doc, setDoc, getDoc } from "firebase/firestore";
+import styles from "../styles/Register.module.scss";
+import { FcGoogle } from "react-icons/fc";
 
 const ADMIN_EMAIL = "admin@gmail.com";
 
@@ -31,7 +33,6 @@ const Register = () => {
         createdAt: Date.now(),
       });
 
-      alert("User Registered Successfully");
       navigate("/login");
     } catch (error) {
       alert(error.message);
@@ -62,33 +63,52 @@ const Register = () => {
   };
 
   return (
-    <div className="auth-page">
-      <div className="auth-card">
-        <h2>Register</h2>
+    <div className={styles.registerPage}>
+      <div className={styles.registerContainer}>
+        {/* LEFT SIDE */}
+        <div className={styles.registerLeft}>
+          <h1>Create account ✨</h1>
+          <p className={styles.subtitle}>
+            Register to start managing your projects
+          </p>
 
-        <input
-          placeholder="Name"
-          value={name}
-          onChange={(e) => setName(e.target.value)}
-        />
+          <div className={styles.registerForm}>
+            <input
+              placeholder="Full name"
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+            />
 
-        <input
-          placeholder="Email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-        />
+            <input
+              placeholder="Email address"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+            />
 
-        <input
-          placeholder="Password"
-          type="password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-        />
+            <input
+              placeholder="Password"
+              type="password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+            />
 
-        <button onClick={handleRegister}>Register</button>
-        <button onClick={handleGoogleRegister} className="google-btn">
-          Sign up with Google
-        </button>
+            <button onClick={handleRegister}>
+              Create account
+            </button>
+          </div>
+
+          <button
+            onClick={handleGoogleRegister}
+            className={styles.googleBtn}
+          >
+            <FcGoogle className={styles.googleIcon} />
+            Continue with Google
+          </button>
+
+        </div>
+
+        {/* RIGHT SIDE */}
+        <div className={styles.registerRight} />
       </div>
     </div>
   );
